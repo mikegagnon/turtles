@@ -1,5 +1,4 @@
 #~/usr/bin/env bash
-set -x
 
 trash=$1
 rootpath=$2
@@ -9,9 +8,11 @@ rootpath=$2
 while IFS='$\n' read -r path; do
     ./process-change.sh "$path" "$trash" "$rootpath"
 
-    bname="$(basename "$path")"
+    bname="$(basename $path)"
+    echo "asdf" $bname
 
-    if [ $bname != "dir-main" ]; then
+    # TODO?: just touch a jpg in the parent directory or something like that?
+    if [ "$bname" != "dir-main" ]; then
     	if [ -d "${path}" ] ; then
 		    #echo "$path is a directory";
 		    parentdir="$(dirname "$path")"

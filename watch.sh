@@ -2,4 +2,4 @@
 
 rootpath=$1
 
-fswatch --recursive "$rootpath/contents" | ./handle-change.sh "$rootpath/trash" "$rootpath/contents"
+fswatch --recursive "$rootpath/dir-contents" | ./handle-change.sh "$rootpath/trash" "$rootpath/dir-contents"

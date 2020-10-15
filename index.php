@@ -1,5 +1,6 @@
 <?
 
+
 function isTurtleDir($dirname) {
   return $dirname == "." || substr(basename($dirname), 0, strlen("dir-")) === "dir-";
 }
@@ -18,6 +19,24 @@ $cwd = basename(getcwd());
 $relpath = $argv[1];
 $depth = $argv[2];
 $setupPrefix = "../" . str_repeat("../", $depth) . "setup/";
+
+
+
+
+$textFilename = "../" . str_repeat("../", $depth) . "setup/header.txt";
+$myfile = fopen($textFilename, "r") or die("Unable to open file!");
+$headerText = fread($myfile,filesize($textFilename));
+
+
+$textFilename = "../" . str_repeat("../", $depth) . "setup/title.txt";
+$myfile = fopen($textFilename, "r") or die("Unable to open file!");
+$titleText = fread($myfile,filesize($textFilename));
+
+
+
+
+
+
 
 $thisunit = false;
 $thisturtle = true;
@@ -45,37 +64,27 @@ if (sizeof($jpegs) == 0) {
 
 #echo "1." . $thisunit;
 
-if ($thisunit) {
-  #$turtledirs = [];
-  #$unitdirs = [];
+$txts = glob('*.resized.jpg.txt');
 
+if (sizeof($txts) == 0) {
+  $warning = $warning . " (Warning) empty *.resized.jpg.txt glob";
+} elseif (sizeof($txts) > 1) {
+  $warning = $warning . " (Warning) sizeof *.resized.jpg.txt glob > 1";
+  $textFilename = basename($txts[0]);
+  $myfile = fopen($textFilename, "r") or die("Unable to open file!");
+  $textContents = fread($myfile,filesize($textFilename));
+  fclose($myfile);
+} else {
+  $textFilename = basename($txts[0]);
+  $myfile = fopen($textFilename, "r") or die("Unable to open file!");
+  $textContents = fread($myfile,filesize($textFilename));
+  fclose($myfile);
+}
 
-
-  $txts = glob('*.resized.jpg.txt');
-
-  if (sizeof($txts) == 0) {
-    $warning = $warning . " (Warning) empty *.resized.jpg.txt glob";
-  } elseif (sizeof($txts) > 1) {
-    $warning = $warning . " (Warning) sizeof *.resized.jpg.txt glob > 1";
-    $textFilename = basename($txts[0]);
-    $myfile = fopen($textFilename, "r") or die("Unable to open file!");
-    $textContents = fread($myfile,filesize($textFilename));
-    fclose($myfile);
-  } else {
-    $textFilename = basename($txts[0]);
-    $myfile = fopen($textFilename, "r") or die("Unable to open file!");
-    $textContents = fread($myfile,filesize($textFilename));
-    fclose($myfile);
-  }
-
-} else { 
-
+if ($thisturtle) { 
   $alldirs = array_filter(glob('*'), 'is_dir');
   $turtledirs = array_filter($alldirs, "isTurtleDir");
   $unitdirs = array_filter($alldirs, "isUnitDir");
-  echo "1. " . implode($alldirs);
-
-  #echo "1. " . implode($alldirs);
 }
 
 
@@ -94,7 +103,7 @@ if ($thisunit) {
     <meta name="author" content="">
     <link rel="icon" href="<? echo $setupPrefix ?>img/favicon.png">
 
-    <title>Michael N. Gagnon</title>
+    <title><? echo $titleText?></title>
 
     <link href="<? echo $setupPrefix ?>css/bootstrap.css" rel="stylesheet">
 
@@ -122,7 +131,7 @@ if ($thisunit) {
         <div class="container d-flex justify-content-between">
           <a class="navbar-brand d-flex align-items-center">
             <img src="<? echo $setupPrefix ?>img/favicon.png" width="20" height="20">
-            <strong>&nbsp;Michael N. Gagnon:</strong>&nbsp;&nbsp;&nbsp;<span style='font-family: "Courier New"'><? echo $relpath ?>/index.html</span>
+            <strong>&nbsp;<? echo $titleText ?></strong>&nbsp;&nbsp;&nbsp;<span style='font-family: "Courier New"'><? echo $relpath ?>/index.html</span>
           </a>
         </div>
       </div>
@@ -137,12 +146,9 @@ if ($thisunit) {
           <h1 class="jumbotron-heading"><b><? echo $cwd ?></b></h1>
 
 <?
-  if ($thisunit) {
-    $t = nl2br(htmlentities($textContents));
-    echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a><div style='text-align: left;'><br><br>$t</div>";
-  } else {
-    echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a>";
-  }
+  $t = nl2br(htmlentities($textContents));
+  echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a><div style='text-align: left;'><br><br>$t</div>";
+
 ?>
 
         </div>

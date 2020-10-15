@@ -12,8 +12,12 @@ else
     # echo "$path file does NOT exist"
     if [[ -d  "$path" ]]
 	then
-	    # echo "$path dir exists"
-	    ./process-dir-change.sh "$path" "$trash"
+	    echo "$path dir exists"
+	    echo "path: $path"
+	    echo "trash: $trash"
+	    echo "rootpath: $rootpath"
+
+	    ./process-dir-change.sh "$path" "$trash" "$rootpath"
 	else
 		:
 	 	# This happens when a directory or filename changes name, or is deleted.

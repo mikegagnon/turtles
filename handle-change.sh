@@ -22,8 +22,8 @@ while IFS='$\n' read -r path; do
 		fi
 
 	    # Must process the parent directory so it updates too
-	    echo $path
-	    echo $parentdir
+	    echo "invoking parent, path=$path"
+	    echo "invoking parent, parentdir=$parentdir"
 	    ./process-change.sh "$parentdir" "$trash" "$rootpath"
 	fi
 

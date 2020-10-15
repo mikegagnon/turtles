@@ -1,7 +1,7 @@
 <?
 
 function isTurtleDir($dirname) {
-  return $dirname == "." || substr(basename($dirname), 0, strlen("dir-")) === "dir-";
+  return substr(basename($dirname), 0, strlen("dir-")) === "dir-";
 }
 
 function isUnitDir($dirname) {
@@ -21,9 +21,7 @@ $setupPrefix = "../" . str_repeat("../", $depth) . "setup/";
 
 $thisunit = false;
 $thisturtle = true;
-echo "1." . $relpath;
 if (isUnitDir($relpath)) {
-  echo "unit dir";
   $thisunit = true;
   $thisturtle = false;
 }
@@ -43,11 +41,9 @@ if (sizeof($jpegs) == 0) {
   $headerJpgFilename = basename($jpegs[0]);
 }
 
-#echo "1." . $thisunit;
-
 if ($thisunit) {
-  #$turtledirs = [];
-  #$unitdirs = [];
+  $turtledirs = [];
+  $unitdirs = [];
 
 
 
@@ -73,7 +69,6 @@ if ($thisunit) {
   $alldirs = array_filter(glob('*'), 'is_dir');
   $turtledirs = array_filter($alldirs, "isTurtleDir");
   $unitdirs = array_filter($alldirs, "isUnitDir");
-  echo "1. " . implode($alldirs);
 
   #echo "1. " . implode($alldirs);
 }
@@ -209,7 +204,6 @@ EOT;
 
 
   }
-
 
   foreach ($unitdirs as &$udir) {
     $baseudir = $udir; //basename($udir);

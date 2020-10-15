@@ -2,4 +2,4 @@
 
 rootpath=$1
 
-fswatch --recursive "$rootpath/dir-main" | ./handle-change.sh "$rootpath/trash" "$rootpath/dir-main"
+fswatch -Ee "(html|php)$" --recursive "$rootpath/dir-main" | ./handle-change.sh "$rootpath/trash" "$rootpath/dir-main"

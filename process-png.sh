@@ -7,3 +7,4 @@ newname=$path.resized.jpg
 magick convert -resize '1000' "$path" "$newname"
 mv "$path" "$trash"
 echo "Convert .png to .jpg: $newname"
+tesseract "$newname" "$newname"

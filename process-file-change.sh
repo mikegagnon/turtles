@@ -5,8 +5,6 @@ shopt -s nocaseglob
 path=$1
 trash=$2
 
-resizedImage=false
-
 if [[ "$path" == *.heic ]]
 then
 	./process-heic.sh "$path" "$trash"
@@ -29,11 +27,4 @@ then
 	exit 0
 else
 	echo UNHANDLED "$path"
-fi
-
-if [ "$resizedImage" = true ]
-then
-	echo "resized"
-else
-	echo "false"
 fi

@@ -1,7 +1,10 @@
 <?
-$depth = $argv[1];
+
+
+$relpath = $argv[1];
+$depth = $argv[2];
 //echo $depth;
-$prefix = "../" . str_repeat("../", $depth);
+$prefix = "../" . str_repeat("../", $depth) . "setup/";
 $cwd = basename(getcwd());
 $dirs = array_filter(glob('*'), 'is_dir');
 $jpegs = glob('*.jpg');
@@ -42,9 +45,9 @@ $jpegs = glob('*.jpg');
       </div>
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
-          <a href="#" class="navbar-brand d-flex align-items-center">
+          <a class="navbar-brand d-flex align-items-center">
             <img src="<? echo $prefix ?>img/favicon.png" width="20" height="20">
-            <strong>&nbsp;Michael N. Gagnon</strong>
+            <strong>&nbsp;Michael N. Gagnon:</strong>&nbsp;&nbsp;&nbsp;<span style='font-family: "Courier New"'><? echo $relpath ?>/index.html</span>
           </a>
         </div>
       </div>

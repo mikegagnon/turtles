@@ -12,10 +12,11 @@ reldepth=`expr $totaldepth - $rootdepth`
 #echo "rel depth = $reldepth for $path"
 
 dir=`dirname "$path"`
+relpath=`grealpath --relative-to="$rootpath" "$dir"`
+
 
 echo dir "$dir"
 
 cp "index.php" "$dir"
 cd "$dir"
-#for i in *; do mv "$i" "$(echo $i|tr A-Z a-z)"; done
-php index.php $reldepth > index.html
+php index.php "$relpath" $reldepth > index.html

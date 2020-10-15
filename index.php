@@ -149,56 +149,17 @@ if ($thisunit) {
 <?
 if ($thisunit) {
 
-    $t = nl2br(htmlentities($textContents));
+  //   $t = nl2br(htmlentities($textContents));
 
-    $html = <<<EOT
+  //   $html = <<<EOT
 
-            <div class="margin: auto; auto-text-div" style="width: 600;">
-              Centered element
-            </div>
-  EOT;
-    echo $html;
+  //           <div class="margin: auto; auto-text-div" style="width: 600;">
+  //             Centered element
+  //           </div>
+  // EOT;
+  //   echo $html;
 
-} else if (false) {
-    
-
-
-    foreach ($jpegs as &$filename) {
-    $without_extension = basename($filename, '.jpg');
-    $isfolder = is_dir($without_extension);
-    if ($isfolder) {
-      $destination = $without_extension . "/index.html";
-      $cssclass = "image-folder";
-    } else {
-      $destination = $filename;
-      $cssclass = "image-file";
-    }
-
-    #$value = $value * 2;
-    $html = <<<EOT
-              <div class="row">
-              <div class="col-md-4">
-              </div>
-              <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                  <a  href="$destination"><img class="card-img-top $cssclass" src="$filename"></a>
-                  <div class="card-body">
-                    <p class="card-text">
-                      <a href="$destination">$destination</a>
-
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-              </div>
-            </div>
-EOT;
-    echo $html;
-  }
 } else {
-
-
 
   foreach ($turtledirs as &$tdir) {
     $basetdir = basename($tdir);

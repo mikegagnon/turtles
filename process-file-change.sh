@@ -4,6 +4,9 @@ shopt -s nocaseglob
 
 path=$1
 trash=$2
+rootpath=$3
+
+resizedImage=false
 
 if [[ "$path" == *.heic ]]
 then
@@ -27,4 +30,11 @@ then
 	exit 0
 else
 	echo UNHANDLED "$path"
+fi
+
+if [ "$resizedImage" = true ]
+then
+	# TODO? only run php if an image operation was actually performed
+	# TODO: add a batch-mode option that generates all missing index.html files, etc.
+	./run-php.sh "$path" "$rootpath"
 fi

@@ -2,11 +2,12 @@
 
 path=$1
 trash=$2
+rootpath=$3
 
 if [[ -f  "$path" ]]
 then
     #echo "$path file exists"
-    ./process-file-change.sh "$path" "$trash"
+    ./process-file-change.sh "$path" "$trash" "$rootpath"
 else
     # echo "$path file does NOT exist"
     if [[ -d  "$path" ]]

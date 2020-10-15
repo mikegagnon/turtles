@@ -1,7 +1,6 @@
 #~/usr/bin/env bash
 
-home=$1
+rootpath=$1
 trash=$2
 
-#fswatch --event-flags --recursive $1 | ./handle-change.sh
-fswatch --recursive $1 | ./handle-change.sh $2
+fswatch --recursive "$rootpath" | ./handle-change.sh "$trash" "$rootpath"

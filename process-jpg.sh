@@ -3,7 +3,7 @@
 
 path=$1
 trash=$2
-newname=$path.resized.jpg
+newname="$path.resized.jpg"
 
 # We need to avoid infinite loops, so do not resize an image that is already resized
 if [[ $path == *.resized.jpg ]]

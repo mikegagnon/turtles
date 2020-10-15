@@ -8,6 +8,16 @@ trash=$2
 if [[ $path == *.heic ]]
 then
 	./process-heic.sh "$path" "$trash"
+elif [[ $path == *.png ]]
+then
+	./process-png.sh "$path" "$trash"
+elif [[ $path == *.jpg ]]
+then
+	./process-jpg.sh "$path" "$trash"
+elif [[ $path == *.DS_Store ]]
+then
+	# Ignore these silly files
+	exit 0
 else
-	echo foo $path
+	echo UNHANDLED $path
 fi

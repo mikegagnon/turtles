@@ -17,6 +17,16 @@ $textContents = "missing: *.resized.jpg.txt";
 $cwd = basename(getcwd());
 
 $relpath = $argv[1];
+
+# TODO
+$prettyrelpath = $relpath;
+// if ($relpath == "./index.html") {
+//   $prettyrelpath = "dir-main/";
+// } else {
+//   $prettyrelpath = "dir-main/" . $relpath;
+// }
+
+
 $depth = $argv[2];
 #$setupPrefix = "../" . str_repeat("../", $depth) . "setup/";
 $setupPrefix = str_repeat("../", $depth) . "setup/";
@@ -45,9 +55,7 @@ $titleText = fread($myfile,filesize($textFilename));
 
 $thisunit = false;
 $thisturtle = true;
-echo "1." . $relpath;
 if (isUnitDir($relpath)) {
-  echo "unit dir";
   $thisunit = true;
   $thisturtle = false;
 }
@@ -66,8 +74,6 @@ if (sizeof($jpegs) == 0) {
 } else {
   $headerJpgFilename = basename($jpegs[0]);
 }
-
-#echo "1." . $thisunit;
 
 $txts = glob('*.resized.jpg.txt');
 
@@ -136,7 +142,7 @@ if ($thisturtle) {
         <div class="container d-flex justify-content-between">
           <a class="navbar-brand d-flex align-items-center">
             <img src="<? echo $setupPrefix ?>img/favicon.png" width="20" height="20">
-            <strong>&nbsp;<? echo $titleText ?></strong>&nbsp;&nbsp;&nbsp;<span style='font-family: "Courier New"'><? echo $relpath ?>/index.html</span>
+            <strong>&nbsp;<? echo $titleText ?></strong>&nbsp;&nbsp;&nbsp;<span style='font-family: "Courier New"'><? echo $prettyrelpath ?>/index.html</span>
           </a>
         </div>
       </div>

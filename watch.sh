@@ -1,5 +1,6 @@
 #~/usr/bin/env bash
 
-rootpath=$1
+rootpath=`grealpath $1`
 
-fswatch -Ee "(html|php)$" --recursive "$rootpath/dir-main" | ./handle-change.sh "$rootpath/trash" "$rootpath/dir-main"
+echo $rootpath
+fswatch -Ee "(html|php|DS_Store|dir-main)$" --recursive "$rootpath/dir-main" | ./handle-change.sh "$rootpath/trash" "$rootpath/dir-main" "$rootpath"

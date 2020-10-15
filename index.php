@@ -18,17 +18,22 @@ $cwd = basename(getcwd());
 
 $relpath = $argv[1];
 $depth = $argv[2];
-$setupPrefix = "../" . str_repeat("../", $depth) . "setup/";
+#$setupPrefix = "../" . str_repeat("../", $depth) . "setup/";
+$setupPrefix = str_repeat("../", $depth) . "setup/";
 
 
 
 
-$textFilename = "../" . str_repeat("../", $depth) . "setup/header.txt";
+#$textFilename = "../" . str_repeat("../", $depth) . "setup/header.txt";
+$textFilename = str_repeat("../", $depth) . "setup/header.txt";
+
 $myfile = fopen($textFilename, "r") or die("Unable to open file!");
 $headerText = fread($myfile,filesize($textFilename));
 
 
-$textFilename = "../" . str_repeat("../", $depth) . "setup/title.txt";
+#$textFilename = "../" . str_repeat("../", $depth) . "setup/title.txt";
+$textFilename = str_repeat("../", $depth) . "setup/title.txt";
+
 $myfile = fopen($textFilename, "r") or die("Unable to open file!");
 $titleText = fread($myfile,filesize($textFilename));
 

@@ -2,7 +2,7 @@
 
 
 function isTurtleDir($dirname) {
-  return $dirname == "." || substr(basename($dirname), 0, strlen("dir-")) === "dir-";
+  return true; //return $dirname == "." || substr(basename($dirname), 0, strlen("dir-")) === "dir-";
 }
 
 function isUnitDir($dirname) {
@@ -187,7 +187,24 @@ if ($thisunit) {
   foreach ($turtledirs as &$tdir) {
     $basetdir = basename($tdir);
     $destination = $basetdir . "/index.html";
-    $cssclass = "image-folder";
+
+
+
+
+    $alldirs = array_filter(glob($tdir . "/*"), 'is_dir');
+
+    if (sizeof($alldirs) == 0) {
+      $cssclass = "image-file";
+    } else {
+      $cssclass = "image-folder";
+    }
+    #echo "dirs: " . implode($alldirs);
+
+
+
+    
+    //
+
 
     $thisjpegs = glob($basetdir . '/*.resized.jpg');
     $thiswarnings = "";
@@ -201,13 +218,19 @@ if ($thisunit) {
       $thisJpgFilename = basename($thisjpegs[0]);
     }
 
-    $imgsrc = $basetdir . "/" . $thisJpgFilename;
+    if (empty($thisJpgFilename)) {
+      $imgsrc = $setupPrefix . "/img/no-image.png";
+    } else {
+      $imgsrc = $basetdir . "/" . $thisJpgFilename;
+    }
+
+    #$imgsrc = $basetdir . "/" . $thisJpgFilename;
 
     $html = <<<EOT
               <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-2">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-8">
                 <div class="card mb-4 box-shadow">
                   <a  href="$destination"><img class="card-img-top $cssclass" src="$imgsrc"></a>
                   <div class="card-body">
@@ -218,7 +241,7 @@ if ($thisunit) {
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-2">
               </div>
             </div>
 EOT;
@@ -244,8 +267,13 @@ EOT;
     } else {
       $thisJpgFilename = basename($thisjpegs[0]);
     }
+  
+    if (empty($thisJpgFilename)) {
+      $imgsrc = $setupPrefix . "/img/no-image.png";
+    } else {
+      $imgsrc = $baseudir . "/" . $thisJpgFilename;
+    }
 
-    $imgsrc = $baseudir . "/" . $thisJpgFilename;
 
     $html = <<<EOT
               <div class="row">

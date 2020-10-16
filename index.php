@@ -209,6 +209,8 @@ if ($thisunit) {
     $thisjpegs = glob($basetdir . '/*.resized.jpg');
     $thiswarnings = "";
 
+    $thisJpgFilename = "";
+    
     if (sizeof($thisjpegs) == 0) {
       $thiswarnings = $thiswarnings . " (Warning) empty *.resized.jpg glob for " . $basetdir;
     } elseif (sizeof($thisjpegs) > 1) {
@@ -223,6 +225,9 @@ if ($thisunit) {
     } else {
       $imgsrc = $basetdir . "/" . $thisJpgFilename;
     }
+
+    //  $imgsrc = $setupPrefix . "/img/no-image.png";
+    
 
 
     #$imgsrc = $basetdir . "/" . $thisJpgFilename;

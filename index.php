@@ -212,7 +212,7 @@ if ($thisunit) {
                   <a  href="$destination"><img class="card-img-top $cssclass" src="$imgsrc"></a>
                   <div class="card-body">
                     <p class="card-text">
-                      <a href="$destination">$baseudir</a>
+                      <a href="$destination">$basetdir</a>
 
                     </p>
                   </div>

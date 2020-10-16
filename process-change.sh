@@ -12,10 +12,17 @@ else
     # echo "$path file does NOT exist"
     if [[ -d  "$path" ]]
 	then
-	    echo "$path dir exists"
-	    echo "path: $path"
-	    echo "trash: $trash"
-	    echo "rootpath: $rootpath"
+	    # echo "$path dir exists"
+	    # echo "path: $path"
+	    # echo "trash: $trash"
+	    # echo "rootpath: $rootpath"
+	    bname="$(basename $path)"
+
+	    
+
+	    if [ "$bname" = "x" ]; then
+		 	cp "$path/../"*.resized.jpg "$path/x.jpg"
+		fi
 
 	    ./process-dir-change.sh "$path" "$trash" "$rootpath"
 	else

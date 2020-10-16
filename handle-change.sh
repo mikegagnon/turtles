@@ -37,8 +37,8 @@ while IFS='$\n' read -r path; do
 		    parentdir="$(dirname "$parentdir")"
 		fi
 
-		echo "aaa $parentdir"
-		echo "bbbb $basepath"
+		#echo "aaa $parentdir"
+		#echo "bbbb $basepath"
 
 		if [ "$parentdir" != "$basepath" ]; then
 		    # Must process the parent directory so it updates too

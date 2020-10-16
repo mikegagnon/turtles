@@ -139,11 +139,20 @@ if ($thisturtle) {
         </div>
       </div>
       <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
+        <div class="container d-flex ">
           <a class="navbar-brand d-flex align-items-center">
             <img src="<? echo $setupPrefix ?>img/favicon.png" width="20" height="20">
-            <strong>&nbsp;<? echo $titleText ?></strong>&nbsp;&nbsp;&nbsp;<span style='font-family: "Courier New"'><? echo $prettyrelpath ?>/index.html</span>
-          </a>
+            <strong>&nbsp;<? echo $titleText ?></strong>
+            &nbsp;&nbsp;&nbsp;
+            <span style='font-family: "Courier New"'><? echo $prettyrelpath ?>/index.html</span>
+        </a>
+
+        <?
+          if ($prettyrelpath != ".")  {
+            echo '<a style=" text-decoration: underline; color: white" href="../index.html">up</a>';
+          }
+
+        ?>
         </div>
       </div>
     </header>

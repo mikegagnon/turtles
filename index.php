@@ -203,24 +203,35 @@ if ($thisturtle) {
 
   function getTurtleRef($link) {
     global $depth;
+
+    if (ctype_space($link) || empty($link)) {
+      return false;
+    }
+
+
     $turtleref = "../" . str_repeat("../", $depth) . $link;
     if (is_dir($turtleref)) {
-      return $turtleref . "/index.html";
+      return $turtleref; # . "/index.html";
     } else {
       return false;
     }
 
   }
 
+  $turtlerefLinks = [];
+
   function outputLink($link) {
+      global $turtledirs;
       $turrtlereflink = getTurtleRef($link);
       if (startsWith($link, "http")) {
-          echo "Link: <a href='$link'>$link</a><br>";
+          echo "<b>Link</b>: <a href='$link'>$link</a><br>";
       } else if ($turrtlereflink) {
-          echo "Link: <a href='$turrtlereflink'>$link</a><br>";
-
+        #echo "turrtlereflink " . $turrtlereflink;
+        #array_push($turtlerefLinks, $turrtlereflink);
+        array_push($turtledirs, ":" . $turrtlereflink);
+          //echo "Link: <a href='$turrtlereflink'>$link</a><br>";
       } else {
-          echo "Link: $link<br>";
+          echo "<b>Link</b>: $link<br>";
       }       
   }
 
@@ -236,7 +247,7 @@ if ($thisturtle) {
     while ($line !== false) {
       # do something with $line
       $line = strtok($separator);
-      if (!ctype_space($line)) {
+      if (!ctype_space($line) && !empty($line)) {
         outputLink($line);
 
         
@@ -278,10 +289,15 @@ if ($thisunit) {
 
 } else {
 
-
   foreach ($turtledirs as &$tdir) {
-    $basetdir = basename($tdir);
-    $destination = $basetdir . "/index.html";
+
+    if (startsWith($tdir, ":")) {
+      $basetdir = ltrim($tdir, ':'); 
+      $destination = $basetdir . "/index.html";
+    } else {
+      $basetdir = basename($tdir);
+      $destination = $basetdir . "/index.html";
+    }
 
 
 

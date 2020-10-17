@@ -76,6 +76,8 @@ if (sizeof($jpegs) == 0) {
 }
 
 $txts = glob('*.resized.jpg.txt');
+$pdfs = glob('*.pdf');
+
 
 if (sizeof($txts) == 0) {
   $warning = $warning . " (Warning) empty *.resized.jpg.txt glob";
@@ -167,9 +169,25 @@ if ($thisturtle) {
 
 <?
   $t = nl2br(htmlentities($textContents));
-  echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a><div style='text-align: left;'><br><br>$t</div>";
+  echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a>";
+
+  echo "<br><br>";
+
+  //$p = implode($pdfs);
+  foreach ($pdfs as &$p) {
+    echo "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
+  }
+
+  if (!empty($pdfs)) { 
+      echo "<br><br>";
+  }
+
+  echo "<div style='text-align: left;'>$t</div>";
+
+
 
 ?>
+
 
         </div>
       </section>
@@ -208,6 +226,9 @@ if ($thisunit) {
       $cssclass = "image-folder";
     }
     #echo "dirs: " . implode($alldirs);
+
+
+
 
 
 

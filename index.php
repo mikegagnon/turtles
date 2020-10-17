@@ -204,7 +204,6 @@ if ($thisturtle) {
   function getTurtleRef($link) {
     global $depth;
     $turtleref = "../" . str_repeat("../", $depth) . $link;
-    echo "'$depth' tref: ". $turtleref;
     if (is_dir($turtleref)) {
       return $turtleref . "/index.html";
     } else {

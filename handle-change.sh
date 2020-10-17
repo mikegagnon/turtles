@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# set -x
 
 trash=$1
 rootpath=$2

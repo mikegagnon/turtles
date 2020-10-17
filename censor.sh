@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#set -x
 
 rootpath=`grealpath $1`
 destpath="$rootpath-censored"

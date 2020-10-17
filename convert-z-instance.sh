@@ -13,6 +13,10 @@ rm "$zpath"/*
 rmdir "$zpath"
 rm "$xpath"/*
 rmdir "$xpath"
+rm "$parentpath"/*.txt
+
+tesseract "$targetjpg" "$targetjpg"
+
 
 #ls parentpath/
 

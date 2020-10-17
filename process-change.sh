@@ -75,7 +75,10 @@ else
 
 	    if [ "$bname" = "x" ]; then
 		 	cp "$path/../"*.resized.jpg "$path/x.jpg"
+		elif [ "$bname" = "z" ]; then
+		 	cp "$path/../x/x.jpg.resized.jpg" "$path/z.jpg"
 		fi
+
 
 	    ./process-dir-change.sh "$path" "$trash" "$rootpath"
 	else

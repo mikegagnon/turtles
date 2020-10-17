@@ -176,19 +176,32 @@ if ($thisturtle) {
 
 
 
-      <section class="jumbotron text-center">
+      <section class="text-center">
         <div class="container">
-          <h1 class="jumbotron-heading"><b><? echo $cwd ?></b></h1>
+          <h3><b><? echo $cwd ?></b></h3>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
 
 <?
   $t = nl2br(htmlentities($textContents));
-  echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a>";
+  //echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a>";
 
-  echo "<br><br>";
+  //echo "<br><br>";
 
+
+  $pdfhtml = "";
   foreach ($pdfs as &$p) {
-    echo "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
+    $pdfhtml = $pdfhtml . "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
   }
+
+
+
+
+
+  
 
   /*foreach ($pdfs as &$p) {
     echo "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
@@ -220,18 +233,23 @@ if ($thisturtle) {
 
   $turtlerefLinks = [];
 
+  $linkhtml = "";
+
   function outputLink($link) {
+      global $linkhtml;
       global $turtledirs;
       $turrtlereflink = getTurtleRef($link);
       if (startsWith($link, "http")) {
-          echo "<b>Link</b>: <a href='$link'>$link</a><br>";
+          //echo "<b>Link</b>: <a href='$link'>$link</a><br>";
+        $linkhtml = $linkhtml . "<b>Link</b>: <a href='$link'>$link</a><br>";
       } else if ($turrtlereflink) {
         #echo "turrtlereflink " . $turrtlereflink;
         #array_push($turtlerefLinks, $turrtlereflink);
         array_push($turtledirs, ":" . $turrtlereflink);
           //echo "Link: <a href='$turrtlereflink'>$link</a><br>";
       } else {
-          echo "<b>Link</b>: $link<br>";
+          //echo "<b>Link</b>: $link<br>";
+        $linkhtml = $linkhtml . "<b>Link</b>: $link<br>";
       }       
   }
 
@@ -239,7 +257,8 @@ if ($thisturtle) {
   $separator = "\r\n";
   $line = strtok($linktextcontents, $separator);
   if ($line != false) {
-    echo "<div style='text-align: left;'>";
+    //echo "<div style='text-align: left;'>";
+    $linkhtml = $linkhtml . "<div style='text-align: left;'>";
 
     if (!ctype_space($line)) {
       outputLink($line);
@@ -253,26 +272,61 @@ if ($thisturtle) {
         
       }
     }
-    echo "</div>";
+    $linkhtml = $linkhtml .  "</div>";
   }
 
 
   if (!empty($pdfs) || !empty($linktxt)) { 
-      echo "<br><br>";
+      $linkhtml = $linkhtml . "<br><br>";
   }
 
-  echo "<div style='text-align: left;'>$t</div>";
+  $thtml = "<div style='text-align: left;'>$t</div>";
+
+
+
+
+
+
+
+
+
+      $cssclass = "image-file";
+
+
+    $html = <<<EOT
+              <div class="row darkdiv">
+              <div class="col-md-3">
+              </div>
+              <div class="col-md-6">
+                <div class="card mb-4 box-shadow">
+                  <a  href="$destination"><img class="card-img-top $cssclass" src="$headerJpgFilename"></a>
+                  <div class="card-body darkdiv">
+                    $pdfhtml
+                    $linkhtml
+                    $thtml
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+              </div>
+            </div>
+EOT;
+    echo $html;
+
+
+
+
+
+
+
+
+
 
 
 
 ?>
 
 
-        </div>
-      </section>
-
-      <div class="album py-5 bg-light">
-        <div class="container">
 
 <?
 if ($thisunit) {
@@ -348,9 +402,9 @@ if ($thisunit) {
 
     $html = <<<EOT
               <div class="row">
-              <div class="col-md-2">
+              <div class="col-md-3">
               </div>
-              <div class="col-md-8">
+              <div class="col-md-6">
                 <div class="card mb-4 box-shadow">
                   <a  href="$destination"><img class="card-img-top $cssclass" src="$imgsrc"></a>
                   <div class="card-body">
@@ -361,7 +415,7 @@ if ($thisunit) {
                   </div>
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
               </div>
             </div>
 EOT;
@@ -397,9 +451,9 @@ EOT;
 
     $html = <<<EOT
               <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-3">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="card mb-4 box-shadow">
                   <a  href="$destination"><img class="card-img-top $cssclass" src="$imgsrc"></a>
                   <div class="card-body">
@@ -410,7 +464,7 @@ EOT;
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
               </div>
             </div>
 EOT;

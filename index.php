@@ -173,7 +173,6 @@ if ($thisturtle) {
 
   echo "<br><br>";
 
-  //$p = implode($pdfs);
   foreach ($pdfs as &$p) {
     echo "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
   }
@@ -220,7 +219,7 @@ if ($thisunit) {
 
     $alldirs = array_filter(glob($tdir . "/*"), 'is_dir');
 
-    if (sizeof($alldirs) == 0) {
+    if (sizeof($alldirs) == 0 && sizeof($pdfs) == 0) {
       $cssclass = "image-file";
     } else {
       $cssclass = "image-folder";

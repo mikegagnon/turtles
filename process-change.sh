@@ -60,6 +60,18 @@ else
 	 #    echo "."
 	 #    echo "."
 	    
+	    # echo "."
+	    # echo "."
+	    # echo "."
+	    # echo "."
+	    # echo "."
+	    # echo "."
+	    # echo "." "$bname" 
+	    # echo "."
+	    # echo "."
+	    # echo "."
+	    # echo "."
+
 
 	    if [ "$bname" = "x" ]; then
 		 	cp "$path/../"*.resized.jpg "$path/x.jpg"

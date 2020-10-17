@@ -14,6 +14,5 @@ relpath=`grealpath --relative-to="$rootpath" "$dir"`
 
 cp "index.php" "$dir"
 cd "$dir"
-set -x
 php index.php "$relpath" $reldepth > index.html
 rm index.php

@@ -1,6 +1,7 @@
 <?
 
 
+
 function isTurtleDir($dirname) {
   return true; //return $dirname == "." || substr(basename($dirname), 0, strlen("dir-")) === "dir-";
 }
@@ -77,6 +78,18 @@ if (sizeof($jpegs) == 0) {
 
 $txts = glob('*.resized.jpg.txt');
 $pdfs = glob('*.pdf');
+$linktxt = glob('link.txt');
+
+$linktextcontents = "";
+if (sizeof($linktxt) > 0) {
+  $linktextfilename = basename($linktxt[0]);
+  $myfile = fopen($linktextfilename, "r") or die("Unable to open file!");
+  if (filesize($linktextfilename) > 0) {
+    $linktextcontents = fread($myfile,filesize($linktextfilename));
+  }
+  fclose($myfile);
+}
+
 
 
 if (sizeof($txts) == 0) {
@@ -177,7 +190,64 @@ if ($thisturtle) {
     echo "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
   }
 
-  if (!empty($pdfs)) { 
+  /*foreach ($pdfs as &$p) {
+    echo "<div style='text-align: left; font-size: 15pt;'>PDF: <a href='$p'>$p</a></div>";
+  }*/
+
+
+  // https://www.geeksforgeeks.org/php-startswith-and-endswith-functions/
+  function startsWith ($string, $startString) { 
+      $len = strlen($startString); 
+      return (substr($string, 0, $len) === $startString); 
+  }
+
+  function getTurtleRef($link) {
+    global $depth;
+    $turtleref = "../" . str_repeat("../", $depth) . $link;
+    echo "'$depth' tref: ". $turtleref;
+    if (is_dir($turtleref)) {
+      return $turtleref . "/index.html";
+    } else {
+      return false;
+    }
+
+  }
+
+  function outputLink($link) {
+      $turrtlereflink = getTurtleRef($link);
+      if (startsWith($link, "http")) {
+          echo "Link: <a href='$link'>$link</a><br>";
+      } else if ($turrtlereflink) {
+          echo "Link: <a href='$turrtlereflink'>$link</a><br>";
+
+      } else {
+          echo "Link: $link<br>";
+      }       
+  }
+
+  // https://stackoverflow.com/questions/1462720/iterate-over-each-line-in-a-string-in-php
+  $separator = "\r\n";
+  $line = strtok($linktextcontents, $separator);
+  if ($line != false) {
+    echo "<div style='text-align: left;'>";
+
+    if (!ctype_space($line)) {
+      outputLink($line);
+    }
+    while ($line !== false) {
+      # do something with $line
+      $line = strtok($separator);
+      if (!ctype_space($line)) {
+        outputLink($line);
+
+        
+      }
+    }
+    echo "</div>";
+  }
+
+
+  if (!empty($pdfs) || !empty($linktxt)) { 
       echo "<br><br>";
   }
 

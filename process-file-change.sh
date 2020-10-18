@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+# For some reason on my system the following shebang creates a bash 
+# shell that has a noop for a "shopt -s nocaseglob"
+		#!/usr/bin/env bash
+# For some reason /bin/bash words. weird
 
 shopt -s nocaseglob
 
@@ -8,8 +13,16 @@ rootpath=$3
 
 runphp=false
 
-if [[ "$path" == *.heic ]]
+if [[ "$path" == *.HEIC ]]
 then
+	echo "."
+	echo "."
+	echo "."
+	echo "."
+	echo "."
+	echo "."
+	echo "."
+
 	./process-heic.sh "$path" "$trash"
 	runphp=true
 elif file --mime-type "$path" | grep -q "image/png$";

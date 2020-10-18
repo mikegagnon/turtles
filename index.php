@@ -191,7 +191,6 @@ if ($thisturtle) {
 
 <?
   $t = "";
-  echo "foo: '" . $textContents . "'";
   if (!empty($textContents)) {
     $t = nl2br(htmlentities($textContents));
   }

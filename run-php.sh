@@ -3,9 +3,6 @@
 path=$1
 rootpath=$2
 
-echo "path:"  $path
-echo "rootpath" $rootpath
-
 totaldepth=`awk -F"/" '{print NF-1}' <<< "$path"`
 rootdepth=`awk -F"/" '{print NF-1}' <<< "$rootpath"`
 reldepth=`expr $totaldepth - $rootdepth`

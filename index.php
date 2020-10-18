@@ -13,7 +13,7 @@ function isUnitDir($dirname) {
 $warning = "";
 $headerJpgFilename = "missing.resized.jpg";
 $textFilename = "";
-$textContents = "missing: *.resized.jpg.txt";
+$textContents = "";// "missing: *.resized.jpg.txt";
 
 $cwd = basename(getcwd());
 
@@ -107,6 +107,10 @@ if (sizeof($txts) == 0) {
   fclose($myfile);
 }
 
+if (ctype_space($textContents)) {
+  $textContents = "";
+}
+
 if ($thisturtle) { 
   $alldirs = array_filter(glob('*'), 'is_dir');
   $turtledirs = array_filter($alldirs, "isTurtleDir");
@@ -186,7 +190,11 @@ if ($thisturtle) {
         <div class="container">
 
 <?
-  $t = nl2br(htmlentities($textContents));
+  $t = "";
+  echo "foo: '" . $textContents . "'";
+  if (!empty($textContents)) {
+    $t = nl2br(htmlentities($textContents));
+  }
   //echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a>";
 
   //echo "<br><br>";
@@ -276,11 +284,15 @@ if ($thisturtle) {
   }
 
 
-  if (!empty($pdfs) || !empty($linktxt)) { 
+  if (!empty($pdfs) || !empty($linkhtml)) { 
       $linkhtml = $linkhtml . "<br><br>";
   }
 
-  $thtml = "<div style='text-align: left;'>$t</div>";
+  $thtml = "";
+
+  if (!empty($t)) {
+    $thtml = "<div style='text-align: left;'>$t</div>";
+  }
 
 
 
@@ -292,6 +304,20 @@ if ($thisturtle) {
 
       $cssclass = "image-file";
 
+      //$html = "";
+
+      $card = "";
+      if (!empty($pdfhtml) || !empty($linkhtml) || !empty($thtml)) {
+
+        $card = <<<EOT
+            <div class="card-body darkdiv">
+                      $pdfhtml
+                      $linkhtml
+                      $thtml
+                    </div>
+EOT;
+      }
+
 
     $html = <<<EOT
               <div class="row darkdiv">
@@ -300,11 +326,7 @@ if ($thisturtle) {
               <div class="col-md-6">
                 <div class="card mb-4 box-shadow">
                   <a  href="$destination"><img class="card-img-top $cssclass" src="$headerJpgFilename"></a>
-                  <div class="card-body darkdiv">
-                    $pdfhtml
-                    $linkhtml
-                    $thtml
-                  </div>
+                  $card
                 </div>
               </div>
               <div class="col-md-3">

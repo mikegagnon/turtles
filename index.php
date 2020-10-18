@@ -325,7 +325,7 @@ EOT;
               </div>
               <div class="col-md-6">
                 <div class="card mb-4 box-shadow">
-                  <a  href="$destination"><img class="card-img-top $cssclass" src="$headerJpgFilename"></a>
+                  <a  href="$headerJpgFilename"><img class="card-img-top $cssclass" src="$headerJpgFilename"></a>
                   $card
                 </div>
               </div>

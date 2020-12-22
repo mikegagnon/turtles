@@ -27,6 +27,7 @@ def process(name):
 	companions[name] = []
 	f = open(name)
 	text = f.read().replace('\n', ' ')
+	f.close()
 	for word in text.split(): 
 		if word[0] == "#":
 			companions[name].append(word)
@@ -39,6 +40,8 @@ def newtagpage(word, filenames):
 	#tags = []
 	#for fname in filenames:
 
+	filenames = list(set(filenames))
+
 	html = f"<h1>#{word}</h1><ol>"
 	for fname in filenames:
 		comp = companions[fname]
@@ -50,7 +53,7 @@ def newtagpage(word, filenames):
 			cname = remove_prefix(cname, rootpath + "/") 
 			comps += f"<a href='../{cname}'>{c}</a> "
 
-		html += f"<li><a href='../main/{indexname}'>{indexname}</a> {comps}</li>"
+		html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
 	html += "</ol>"
 
 	tagpagename = hashpath + "/" + word + ".html"

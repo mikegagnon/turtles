@@ -90,7 +90,7 @@ def sub(filename, thesetags):
     #cruft fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
     addtags = " ".join([hlink(hashpath, t) for t in sorted(list(thesetags))])
     print(addtags)
-    fixed_content = re.sub("#hashtags", addtags, text)
+    fixed_content = re.sub("#hashtags.*foohash", "#hashtags " + addtags + "</div><span id='foohash", text)
 
 
     #fixed_content = text

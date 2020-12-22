@@ -78,7 +78,7 @@ if (sizeof($jpegs) == 0) {
 
 $txts = glob('*.resized.jpg.txt');
 $pdfs = glob('*.pdf');
-$linktxt = glob('robolink.txt');
+$linktxt = glob('link.txt');
 
 $linktextcontents = "";
 if (sizeof($linktxt) > 0) {
@@ -279,9 +279,11 @@ if ($thisturtle) {
         
       }
     }
-    $linkhtml = $linkhtml .  "</div>";
+    //cruft $linkhtml = $linkhtml .  "</div>";
+    $linkhtml = "<div style='text-align: left;'>#hashtags</div>";
   }
-
+  $linkhtml = "<div style='text-align: left;'>#hashtags</div>";
+  
 
   if (!empty($pdfs) || !empty($linkhtml)) { 
       $linkhtml = $linkhtml . "<br><br>";

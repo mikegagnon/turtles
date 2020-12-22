@@ -75,19 +75,30 @@ def newtagpage(word, filenames):
 	f.write(html)
 	f.close()
 
-def sub(filename):
-	f = open(filename, "r")
-	text = f.read()
-	f.close()
-	#tagpagename = hashpath + "/" + word + ".html"
+def hlink(hashpath, tag):
+    print(hashpath)
+    return f'<a href="{hashpath}/{tag}.html">#{tag}</a> '
 
-	fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
-	#fixed_content = text
-	#print(fixed_content)
-	#print(filename)
-	f = open(filename, "w")
-	f.write(fixed_content)
-	f.close()
+def sub(filename, thesetags):
+    f = open(filename, "r")
+    text = f.read()
+    f.close()
+    #tagpagename = hashpath + "/" + word + ".html"
+
+    thesetags = [t[1:] for t in thesetags]
+
+    #cruft fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
+    addtags = " ".join([hlink(hashpath, t) for t in sorted(list(thesetags))])
+    print(addtags)
+    fixed_content = re.sub("#hashtags", addtags, text)
+
+
+    #fixed_content = text
+    #print(fixed_content)
+    #print(filename)
+    f = open(filename, "w")
+    f.write(fixed_content)
+    f.close()
 
 # Returns list of hashtags, recursively collected from this path and all subdirs
 def propagate(path):
@@ -134,5 +145,13 @@ for tag in tags:
 
 # Search and replace each .html file to hyperlink each hashtag
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)
-for name in filenames: 
-    sub(name)
+print(companions)
+for name in filenames:
+    rname = os.path.dirname(name) + "/robolink.txt"
+    print(rname)
+    if rname in companions:
+        thesetags = companions[rname]
+        print("x", thesetags)
+    else:
+        thesetags = []
+    sub(name, thesetags)

@@ -13,3 +13,4 @@ cp "index.php" "$dir"
 cd "$dir"
 php index.php "$relpath" $reldepth > index.html
 rm index.php
+

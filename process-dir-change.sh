@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+echo "process-dir-c"
 shopt -s nocaseglob
 
 path="$1/dummy-filename"

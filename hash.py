@@ -35,6 +35,7 @@ def process(name):
 				tags[word].append(name)
 			else:
 				tags[word] = [name]
+	#print(companions)
 
 # extract hashtags from link.txt, return as set, thesetags
 # todo rm this comment: thesetags[hashtag] = array of filenames containing that hashtag
@@ -78,9 +79,12 @@ def sub(filename):
 	f = open(filename, "r")
 	text = f.read()
 	f.close()
-	tagpagename = hashpath + "/" + word + ".html"
+	#tagpagename = hashpath + "/" + word + ".html"
 
-	fixed_content = re.sub(r"(#([\d\w\.]+))", r"<a href='" + hashpath + r"/\2.html" + r"'>#\2</a>", text)
+	fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
+	#fixed_content = text
+	#print(fixed_content)
+	#print(filename)
 	f = open(filename, "w")
 	f.write(fixed_content)
 	f.close()
@@ -98,12 +102,15 @@ def propagate(path):
 			thesetags = thesetags | subtags
 
 	#print(dirs)
-	print(path)
-	print(thesetags)
-	print()
+	#print(path)
+	#print(thesetags)
+	#print()
 
-	aggtags = "\n".join(["#" + t for t in sorted(list(thesetags))])
-	f = open(os.path.dirname(path) + "/robolink.txt", "w")
+	aggtags = " ".join(["#" + t for t in sorted(list(thesetags))])
+	#print(path)
+	outfname = path + "/robolink.txt"
+	#print(outfname)
+	f = open(outfname, "w")
 	f.write(aggtags)
 	f.close()
 
@@ -113,12 +120,12 @@ def propagate(path):
 
 # First, propagate the hashtags up the hierarchy, withink the link.txt files
 propagate(realpath)
-sys.exit(1)
 
 # Then, process each link file
-filenames = glob.glob(realpath + "/**/link.txt", recursive=True)
+filenames = glob.glob(realpath + "/**/robolink.txt", recursive=True)
 for name in filenames: 
-    process(name)
+	print(name)
+	process(name)
 
 # Generate a new hash page for each tag
 for tag in tags:

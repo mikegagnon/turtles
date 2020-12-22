@@ -56,6 +56,6 @@ then
 
 	# Cannot run hash automatically?
 	p=`dirname "$rootpath"`
-	./hash.sh "$p"
+	#./hash.sh "$p"
 	
 fi

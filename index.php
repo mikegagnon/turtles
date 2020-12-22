@@ -78,7 +78,7 @@ if (sizeof($jpegs) == 0) {
 
 $txts = glob('*.resized.jpg.txt');
 $pdfs = glob('*.pdf');
-$linktxt = glob('link.txt');
+$linktxt = glob('robolink.txt');
 
 $linktextcontents = "";
 if (sizeof($linktxt) > 0) {

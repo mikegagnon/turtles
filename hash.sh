@@ -5,6 +5,9 @@ hashpath="$rootpath/hash/*.html"
 rm -f $hashpath
 python3 hash.py $rootpath 
 
+#./run-php.sh "$path" "$rootpath"
+
+
 #echo hashing $rootpath
 
 #find . | grep *link.txt

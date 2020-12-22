@@ -40,7 +40,7 @@ def newtagpage(word, filenames):
 	#tags = []
 	#for fname in filenames:
 
-	filenames = list(set(filenames))
+	filenames = sorted(list(set(filenames)))
 
 	html = f"<h1>#{word}</h1><ol>"
 	for fname in filenames:

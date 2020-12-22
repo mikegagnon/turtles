@@ -53,15 +53,9 @@ then
 	# TODO? only run php if an image operation was actually performed
 	# TODO: add a batch-mode option that generates all missing index.html files, etc. Implement by using find to find everything that needs updating, then pipe the result into handle-change.sh
 	./run-php.sh "$path" "$rootpath"
-	echo "."
-	echo "."
-	echo "."
-	echo "."
-	echo "."
-	echo "."
-	echo "."
+
+	# Cannot run hash automatically?
 	p=`dirname "$rootpath"`
-	echo $p
 	./hash.sh "$p"
 	
 fi

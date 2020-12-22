@@ -9,7 +9,6 @@ import re
 rootpath = sys.argv[1]
 realpath = sys.argv[1] + "/main"
 hashpath = sys.argv[1] + "/hash"
-print(realpath)
 
 # tags[hashtag] = array of filenames containing that hashtag
 tags = {}
@@ -28,12 +27,11 @@ def process(name):
 	companions[name] = []
 	f = open(name)
 	text = f.read().replace('\n', ' ')
-	#print(contents)
 	for word in text.split(): 
 		if word[0] == "#":
 			companions[name].append(word)
 			if word in tags:
-				tags[word].push(name)
+				tags[word].append(name)
 			else:
 				tags[word] = [name]
 
@@ -44,15 +42,12 @@ def newtagpage(word, filenames):
 	html = f"<h1>#{word}</h1><ol>"
 	for fname in filenames:
 		comp = companions[fname]
-		#print(fname)
 		indexname = os.path.dirname(fname) + "/index.html"
-		#print(indexname)
 		indexname = remove_prefix(indexname, realpath + "/") 
 		comps = ""
 		for c in comp:
 			cname = hashpath + "/" + c[1:] + ".html"
 			cname = remove_prefix(cname, rootpath + "/") 
-			print(cname)
 			comps += f"<a href='../{cname}'>{c}</a> "
 
 		html += f"<li><a href='../main/{indexname}'>{indexname}</a> {comps}</li>"
@@ -64,9 +59,6 @@ def newtagpage(word, filenames):
 	f.write(html)
 	f.close()
 
-
-	#print(html)
-
 def sub(filename):
 	f = open(filename, "r")
 	text = f.read()
@@ -77,30 +69,16 @@ def sub(filename):
 	f = open(filename, "w")
 	f.write(fixed_content)
 	f.close()
-	print(fixed_content)
-
-
-# 	import re
-# text = '<p>Contents :</p><a href="https://w3resource.com">Python Examples</a><a href="http://github.com">Even More Examples</a>'
-# urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
-# print("Original string: ",text)
-# print("Urls: ",urls)
 
 
 filenames = glob.glob(realpath + "/**/link.txt", recursive=True)
 for name in filenames: 
-    #print(name) 
     process(name)
 
-#print(tags)
-
 for tag in tags:
-	#print(tag)
 	word = tag[1:]
-	#print(word)
 	newtagpage(word, tags[tag])
 
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)
 for name in filenames: 
-    #print(name) 
     sub(name)

@@ -5,6 +5,7 @@
 import os
 import glob
 import sys
+import re
 rootpath = sys.argv[1]
 realpath = sys.argv[1] + "/main"
 hashpath = sys.argv[1] + "/hash"
@@ -66,6 +67,24 @@ def newtagpage(word, filenames):
 
 	#print(html)
 
+def sub(filename):
+	f = open(filename, "r")
+	text = f.read()
+	f.close()
+	tagpagename = hashpath + "/" + word + ".html"
+
+	fixed_content = re.sub(r"(#([\d\w\.]+))", r"<a href='" + hashpath + r"/\2.html" + r"'>#\2</a>", text)
+	f = open(filename, "w")
+	f.write(fixed_content)
+	f.close()
+	print(fixed_content)
+
+
+# 	import re
+# text = '<p>Contents :</p><a href="https://w3resource.com">Python Examples</a><a href="http://github.com">Even More Examples</a>'
+# urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', text)
+# print("Original string: ",text)
+# print("Urls: ",urls)
 
 
 filenames = glob.glob(realpath + "/**/link.txt", recursive=True)
@@ -80,3 +99,8 @@ for tag in tags:
 	word = tag[1:]
 	#print(word)
 	newtagpage(word, tags[tag])
+
+filenames = glob.glob(realpath + "/**/index.html", recursive=True)
+for name in filenames: 
+    #print(name) 
+    sub(name)

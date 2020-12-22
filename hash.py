@@ -36,6 +36,18 @@ def process(name):
 			else:
 				tags[word] = [name]
 
+# extract hashtags from link.txt, return as set, thesetags
+# todo rm this comment: thesetags[hashtag] = array of filenames containing that hashtag
+def gettags(name):
+	thesetags = set([])
+	f = open(name)
+	text = f.read().replace('\n', ' ')
+	f.close()
+	for word in text.split(): 
+		if word[0] == "#":
+			thesetags.add(word[1:])
+	return thesetags
+
 def newtagpage(word, filenames):
 	#tags = []
 	#for fname in filenames:
@@ -73,15 +85,47 @@ def sub(filename):
 	f.write(fixed_content)
 	f.close()
 
+# Returns list of hashtags, recursively collected from this path and all subdirs
+def propagate(path):
+	linktxtfilename = path + "/link.txt"
+	thesetags = gettags(linktxtfilename)
 
+	# dirs = list of dir paths inside path
+	dirs = [ os.path.join(path, name) for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
+	for dirpath in dirs:
+		if "/." not in dirpath:
+			subtags = propagate(dirpath)
+			thesetags = thesetags | subtags
+
+	#print(dirs)
+	print(path)
+	print(thesetags)
+	print()
+
+	aggtags = "\n".join(["#" + t for t in sorted(list(thesetags))])
+	f = open(os.path.dirname(path) + "/robolink.txt", "w")
+	f.write(aggtags)
+	f.close()
+
+	return thesetags
+
+# main
+
+# First, propagate the hashtags up the hierarchy, withink the link.txt files
+propagate(realpath)
+sys.exit(1)
+
+# Then, process each link file
 filenames = glob.glob(realpath + "/**/link.txt", recursive=True)
 for name in filenames: 
     process(name)
 
+# Generate a new hash page for each tag
 for tag in tags:
 	word = tag[1:]
 	newtagpage(word, tags[tag])
 
+# Search and replace each .html file to hyperlink each hashtag
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)
 for name in filenames: 
     sub(name)

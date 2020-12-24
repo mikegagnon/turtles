@@ -9,6 +9,7 @@ import re
 rootpath = sys.argv[1]
 realpath = sys.argv[1] + "/main"
 hashpath = sys.argv[1] + "/hash"
+relhashpath = "../hash"
 
 # tags[hashtag] = array of filenames containing that hashtag
 tags = {}
@@ -50,34 +51,33 @@ def gettags(name):
 	return thesetags
 
 def newtagpage(word, filenames):
-	#tags = []
-	#for fname in filenames:
+    #tags = []
+    #for fname in filenames:
 
-	filenames = sorted(list(set(filenames)))
+    filenames = sorted(list(set(filenames)))
 
-	html = f"<h1>#{word}</h1><ol>"
-	for fname in filenames:
-		comp = companions[fname]
-		indexname = os.path.dirname(fname) + "/index.html"
-		indexname = remove_prefix(indexname, realpath + "/") 
-		comps = ""
-		for c in comp:
-			cname = hashpath + "/" + c[1:] + ".html"
-			cname = remove_prefix(cname, rootpath + "/") 
-			comps += f"<a href='../{cname}'>{c}</a> "
+    html = f"<h1>#{word}</h1><ol>"
+    for fname in filenames:
+    	comp = companions[fname]
+    	indexname = os.path.dirname(fname) + "/index.html"
+    	indexname = remove_prefix(indexname, realpath + "/") 
+    	comps = ""
+    	for c in comp:
+    		cname = relhashpath + "/" + c[1:] + ".html"
+    		cname = remove_prefix(cname, rootpath + "/") 
+    		comps += f"<a href='../{cname}'>{c}</a> "
 
-		html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
-	html += "</ol>"
+    	html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
+    html += "</ol>"
 
-	tagpagename = hashpath + "/" + word + ".html"
+    tagpagename = hashpath + "/" + word + ".html"
+    f = open(tagpagename, "w")
+    f.write(html)
+    f.close()
 
-	f = open(tagpagename, "w")
-	f.write(html)
-	f.close()
-
-def hlink(hashpath, tag):
-    print(hashpath)
-    return f'<a href="{hashpath}/{tag}.html">#{tag}</a> '
+def hlink(rhashpath, tag):
+    print(rhashpath)
+    return f'<a href="{rhashpath}/{tag}.html">#{tag}</a> '
 
 def sub(filename, thesetags):
     f = open(filename, "r")
@@ -88,7 +88,7 @@ def sub(filename, thesetags):
     thesetags = [t[1:] for t in thesetags]
 
     #cruft fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
-    addtags = " ".join([hlink(hashpath, t) for t in sorted(list(thesetags))])
+    addtags = " ".join([hlink(relhashpath, t) for t in sorted(list(thesetags))])
     print(addtags)
     fixed_content = re.sub("#hashtags.*foohash", "#hashtags " + addtags + "</div><span id='foohash", text)
 

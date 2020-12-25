@@ -27,30 +27,30 @@ def remove_prefix(text, prefix):
 
 
 def process(name):
-	companions[name] = []
-	f = open(name)
-	text = f.read().replace('\n', ' ')
-	f.close()
-	for word in text.split(): 
-		if word[0] == "#":
-			companions[name].append(word)
-			if word in tags:
-				tags[word].append(name)
-			else:
-				tags[word] = [name]
-	#print(companions)
+    companions[name] = []
+    f = open(name)
+    text = f.read().replace('\n', ' ')
+    f.close()
+    for word in text.split(): 
+        if word[0] == "#":
+            companions[name].append(word)
+            if word in tags:
+                tags[word].append(name)
+            else:
+                tags[word] = [name]
+    #print(companions)
 
 # extract hashtags from link.txt, return as set, thesetags
 # todo rm this comment: thesetags[hashtag] = array of filenames containing that hashtag
 def gettags(name):
-	thesetags = set([])
-	f = open(name)
-	text = f.read().replace('\n', ' ')
-	f.close()
-	for word in text.split(): 
-		if word[0] == "#":
-			thesetags.add(word[1:])
-	return thesetags
+    thesetags = set([])
+    f = open(name)
+    text = f.read().replace('\n', ' ')
+    f.close()
+    for word in text.split(): 
+        if word[0] == "#":
+            thesetags.add(word[1:])
+    return thesetags
 
 def newtagpage(word, filenames):
     #tags = []
@@ -60,16 +60,25 @@ def newtagpage(word, filenames):
 
     html = f"<h1>#{word}</h1><ol>"
     for fname in filenames:
-    	comp = companions[fname]
-    	indexname = os.path.dirname(fname) + "/index.html"
-    	indexname = remove_prefix(indexname, realpath + "/") 
-    	comps = ""
-    	for c in comp:
-    		cname = relhashpath + "/" + c[1:] + ".html"
-    		cname = remove_prefix(cname, rootpath + "/") 
-    		comps += f"<a href='../{cname}'>{c}</a> "
+        comp = companions[fname]
+        indexname = os.path.dirname(fname) + "/index.html"
+        indexname = remove_prefix(indexname, realpath + "/") 
+        comps = ""
+        for c in comp:
+            cname = relhashpath + "/" + c[1:] + ".html"
+            cname = remove_prefix(cname, rootpath + "/") 
+            comps += f"<a href='../{cname}'>{c}</a> "
 
-    	html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
+        skip = False
+        for gname in filenames:
+            dname1 = os.path.dirname(gname)
+            dname2 = os.path.dirname(fname)
+            if dname2 in dname1 and dname1 != dname2:
+                skip = True
+                break
+
+        if not skip:
+           html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
     html += "</ol>"
 
     tagpagename = hashpath + "/" + word + ".html"
@@ -110,30 +119,30 @@ def sub(filename, thesetags):
 
 # Returns list of hashtags, recursively collected from this path and all subdirs
 def propagate(path):
-	linktxtfilename = path + "/link.txt"
-	thesetags = gettags(linktxtfilename)
+    linktxtfilename = path + "/link.txt"
+    thesetags = gettags(linktxtfilename)
 
-	# dirs = list of dir paths inside path
-	dirs = [ os.path.join(path, name) for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
-	for dirpath in dirs:
-		if "/." not in dirpath:
-			subtags = propagate(dirpath)
-			thesetags = thesetags | subtags
+    # dirs = list of dir paths inside path
+    dirs = [ os.path.join(path, name) for name in os.listdir(path) if os.path.isdir(os.path.join(path, name))]
+    for dirpath in dirs:
+        if "/." not in dirpath:
+            subtags = propagate(dirpath)
+            thesetags = thesetags | subtags
 
-	#print(dirs)
-	#print(path)
-	#print(thesetags)
-	#print()
+    #print(dirs)
+    #print(path)
+    #print(thesetags)
+    #print()
 
-	aggtags = " ".join(["#" + t for t in sorted(list(thesetags))])
-	#print(path)
-	outfname = path + "/robolink.txt"
-	#print(outfname)
-	f = open(outfname, "w")
-	f.write(aggtags)
-	f.close()
+    aggtags = " ".join(["#" + t for t in sorted(list(thesetags))])
+    #print(path)
+    outfname = path + "/robolink.txt"
+    #print(outfname)
+    f = open(outfname, "w")
+    f.write(aggtags)
+    f.close()
 
-	return thesetags
+    return thesetags
 
 # main
 
@@ -143,13 +152,13 @@ propagate(realpath)
 # Then, process each link file
 filenames = glob.glob(realpath + "/**/robolink.txt", recursive=True)
 for name in filenames: 
-	print(name)
-	process(name)
+    print(name)
+    process(name)
 
 # Generate a new hash page for each tag
 for tag in tags:
-	word = tag[1:]
-	newtagpage(word, tags[tag])
+    word = tag[1:]
+    newtagpage(word, tags[tag])
 
 # Search and replace each .html file to hyperlink each hashtag
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)

@@ -9,7 +9,9 @@ import re
 rootpath = sys.argv[1]
 realpath = sys.argv[1] + "/main"
 hashpath = sys.argv[1] + "/hash"
-relhashpath = "../hash"
+
+N = 1
+relhashpath = ("../" * N ) + "hash"
 
 # tags[hashtag] = array of filenames containing that hashtag
 tags = {}
@@ -77,6 +79,8 @@ def newtagpage(word, filenames):
 
 def hlink(rhashpath, tag):
     print(rhashpath)
+    #sys.exit(1)
+
     return f'<a href="{rhashpath}/{tag}.html">#{tag}</a> '
 
 def sub(filename, thesetags):
@@ -87,8 +91,12 @@ def sub(filename, thesetags):
 
     thesetags = [t[1:] for t in thesetags]
 
+    print(filename)
+    rhashpath = os.path.relpath(realpath, filename) + "/hash"
+    print(rhashpath)
+
     #cruft fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
-    addtags = " ".join([hlink(relhashpath, t) for t in sorted(list(thesetags))])
+    addtags = " ".join([hlink(rhashpath, t) for t in sorted(list(thesetags))])
     print(addtags)
     fixed_content = re.sub("#hashtags.*foohash", "#hashtags " + addtags + "</div><span id='foohash", text)
 

@@ -282,9 +282,10 @@ if ($thisturtle) {
       }
     }
     //cruft $linkhtml = $linkhtml .  "</div>";
-    $linkhtml = "<div style='text-align: left;'>#hashtags</div><span id='foohash'>";
+    $linkhtml = $linkhtml . "<div style='text-align: left;'>#hashtags</div><span id='foohash'></div>";
+  } else {
+    $linkhtml = $linkhtml . "<div style='text-align: left;'>#hashtags</div><span id='foohash'></div>";
   }
-  $linkhtml = "<div style='text-align: left;'>#hashtags</div><span id='foohash'>";
   
 
   if (!empty($pdfs) || !empty($linkhtml)) { 

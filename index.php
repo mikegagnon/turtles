@@ -135,6 +135,8 @@ if ($thisturtle) {
 
     <title><? echo $titleText?></title>
 
+    <script src="<? echo $setupPrefix ?>js/qrcode.js"></script> 
+
     <link href="<? echo $setupPrefix ?>css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -509,6 +511,17 @@ EOT;
         <p class="float-right">
           <!--<a href="trilogy.html">🐇</a>-->
         </p>
+        <center><div id="qrcode"></div></center><br><br>
+        <script type="text/javascript">
+          var qrcode = new QRCode("qrcode", {
+              text: window.location.href,
+              width: 300,
+              height: 300,
+              colorDark : "#000000",
+              colorLight : "#ffffff",
+              correctLevel : QRCode.CorrectLevel.H
+          });
+        </script>
         <p>Thanks <a href="https://getbootstrap.com/docs/4.0/examples/album/">Bootstrap</a>!</p>
       </div>
     </footer>

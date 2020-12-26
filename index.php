@@ -279,6 +279,9 @@ if ($thisturtle) {
     while ($line !== false) {
       # do something with $line
       $line = strtok($separator);
+      $oline = $line;
+      preg_match('/^#/', $oline, $matches, PREG_OFFSET_CAPTURE);
+      $istag = count($matches) === 1;
       if (!ctype_space($line) && !empty($line) && 
         //substr($oline, 0, 1) !== "#"
           //strcmp(substr($oline, 0, 1), "#") !== 0

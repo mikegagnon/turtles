@@ -10,6 +10,21 @@ function isUnitDir($dirname) {
   return !isTurtleDir(basename($dirname));
 }
 
+# https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+function startsWith( $haystack, $needle ) {
+     $length = strlen( $needle );
+     return substr( $haystack, 0, $length ) === $needle;
+}
+
+# https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+function endsWith( $haystack, $needle ) {
+    $length = strlen( $needle );
+    if( !$length ) {
+        return true;
+    }
+    return substr( $haystack, -$length ) === $needle;
+}
+
 $warning = "";
 $headerJpgFilename = "missing.resized.jpg";
 $textFilename = "";
@@ -218,21 +233,26 @@ if ($thisturtle) {
 
 
   // https://www.geeksforgeeks.org/php-startswith-and-endswith-functions/
-  function startsWith ($string, $startString) { 
-      $len = strlen($startString); 
-      return (substr($string, 0, $len) === $startString); 
-  }
+// function startsWith ($string, $startString) { 
+//     $len = strlen($startString); 
+//     return (substr($string, 0, $len) === $startString); 
+// }
 
   function getTurtleRef($link) {
     global $depth;
+
 
     if (ctype_space($link) || empty($link)) {
       return false;
     }
 
+    if (startsWith($link, "http")) {
+      return false;
+    }
 
-    $turtleref = "../" . str_repeat("../", $depth) . $link;
-    if (is_dir($turtleref)) {
+    $turtleref = str_repeat("../", $depth - 1) . $link;
+
+    if (is_file($turtleref)) {
       return $turtleref; # . "/index.html";
     } else {
       return false;
@@ -254,8 +274,8 @@ if ($thisturtle) {
       } else if ($turrtlereflink) {
         #echo "turrtlereflink " . $turrtlereflink;
         #array_push($turtlerefLinks, $turrtlereflink);
-        array_push($turtledirs, ":" . $turrtlereflink);
-          //echo "Link: <a href='$turrtlereflink'>$link</a><br>";
+        //array_push($turtledirs, ":" . $turrtlereflink);
+        $linkhtml = $linkhtml . "<b>Link</b>: <a href='$turrtlereflink'>$link</a><br>";
       } else {
           //echo "<b>Link</b>: $link<br>";
         $linkhtml = $linkhtml . "<b>Link</b>: $link<br>";

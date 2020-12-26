@@ -170,7 +170,7 @@ if ($thisturtle) {
 
         <?
           if ($prettyrelpath != ".")  {
-            echo '<a style=" text-decoration: underline; color: white" href="../index.html">up</a>';
+            echo '<a style=" text-decoration: underline; color: white; font-size: 250%;" href="../index.html">⬆️</a>';
           }
 
         ?>
@@ -265,17 +265,25 @@ if ($thisturtle) {
   // https://stackoverflow.com/questions/1462720/iterate-over-each-line-in-a-string-in-php
   $separator = "\r\n";
   $line = strtok($linktextcontents, $separator);
+  $linkhtml = $linkhtml . "<div style='text-align: left;'>";
   if ($line != false) {
     //echo "<div style='text-align: left;'>";
-    $linkhtml = $linkhtml . "<div style='text-align: left;'>";
 
-    if (!ctype_space($line)) {
+      $oline = $line;
+      preg_match('/^#/', $oline, $matches, PREG_OFFSET_CAPTURE);
+      $istag = count($matches) === 1;
+
+    if (!ctype_space($line) && !$istag) {
       outputLink($line);
     }
     while ($line !== false) {
       # do something with $line
       $line = strtok($separator);
-      if (!ctype_space($line) && !empty($line)) {
+      if (!ctype_space($line) && !empty($line) && 
+        //substr($oline, 0, 1) !== "#"
+          //strcmp(substr($oline, 0, 1), "#") !== 0
+        !$istag
+        ) {
         outputLink($line);
 
         
@@ -324,7 +332,7 @@ EOT;
 
 
     $html = <<<EOT
-              <div class="row darkdiv">
+              <div class="row greydiv">
               <div class="col-md-3">
               </div>
               <div class="col-md-6">

@@ -12,6 +12,13 @@
   color: white;
 }
 
+.greydiv {
+  background-color: black;
+  outline: 1px solid black;
+  color: white;
+}
+
+
 .auto-text-div {
   outline: 1px solid gray;
 

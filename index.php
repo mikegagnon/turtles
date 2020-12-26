@@ -322,7 +322,7 @@ if ($thisturtle) {
       if (!empty($pdfhtml) || !empty($linkhtml) || !empty($thtml)) {
 
         $card = <<<EOT
-            <div class="card-body darkdiv">
+            <div class="card-body greydiv">
                       $pdfhtml
                       $linkhtml
                       $thtml

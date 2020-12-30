@@ -282,6 +282,8 @@ if ($thisturtle) {
       }       
   }
 
+  $youtubelinks = [];
+
   // https://stackoverflow.com/questions/1462720/iterate-over-each-line-in-a-string-in-php
   $separator = "\r\n";
   $line = strtok($linktextcontents, $separator);
@@ -290,10 +292,28 @@ if ($thisturtle) {
     //echo "<div style='text-align: left;'>";
 
       $oline = $line;
+      
       preg_match('/^#/', $oline, $matches, PREG_OFFSET_CAPTURE);
       $istag = count($matches) === 1;
 
-    if (!ctype_space($line) && !$istag) {
+      preg_match_all('/^youtube:([^:]+):([^:]+)/', $oline, $ymatches, PREG_OFFSET_CAPTURE);
+      $isyoutube = count($ymatches) >= 1;
+
+
+
+
+    if ($isyoutube) {
+      //preg_match('/^youtube:/', $oline, $ymatches, PREG_OFFSET_CAPTURE);
+      //$isyoutube = count($ymatches) === 1;
+      //print_r($ymatches);
+      //echo($ymatches[1][0][0]);
+      //echo($ymatches[2][0][0]);
+      $linkname = $ymatches[1][0][0];
+      $ycode = $ymatches[2][0][0];
+      $yentry = [$linkname, $ycode];
+      array_push($youtubelinks, $yentry);
+
+    } else if (!ctype_space($line) && !$istag && !$isyoutube) {
       outputLink($line);
     }
     while ($line !== false) {
@@ -302,7 +322,23 @@ if ($thisturtle) {
       $oline = $line;
       preg_match('/^#/', $oline, $matches, PREG_OFFSET_CAPTURE);
       $istag = count($matches) === 1;
-      if (!ctype_space($line) && !empty($line) && 
+
+      preg_match_all('/^youtube:([^:]+):([^:]+)/', $oline, $ymatches, PREG_OFFSET_CAPTURE);
+      $isyoutube = count($ymatches) >= 1;
+
+      if ($isyoutube) {
+        //preg_match('/^youtube:/', $oline, $ymatches, PREG_OFFSET_CAPTURE);
+        //$isyoutube = count($ymatches) === 1;
+        //print_r($ymatches);
+        //echo($ymatches[1][0][0]);
+        //echo($ymatches[2][0][0]);
+        //exit("foo");
+        
+        $linkname = $ymatches[1][0][0];
+        $ycode = $ymatches[2][0][0];
+        $yentry = [$linkname, $ycode];
+        array_push($youtubelinks, $yentry);
+      } else if (!ctype_space($line) && !empty($line) && 
         //substr($oline, 0, 1) !== "#"
           //strcmp(substr($oline, 0, 1), "#") !== 0
         !$istag

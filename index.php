@@ -442,6 +442,7 @@ function echoyoutubes($youtubelinks, $nextYoutubeIndex, $prevtdir, $basetdir) {
                  <center>
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/$ycode" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                   </center>
+                  <br>
               </div>
             </div>
 EOT;
@@ -574,9 +575,9 @@ EOT;
     $prevtdir = $basetdir;
   }
 
-echo("nextYoutubeIndex " . $nextYoutubeIndex);
-echo("prevtdir " . $prevtdir);
-echo("basetdir " . $basetdir);
+// echo("nextYoutubeIndex " . $nextYoutubeIndex);
+// echo("prevtdir " . $prevtdir);
+// echo("basetdir " . $basetdir);
   $nextYoutubeIndex = echoyoutubes($youtubelinks, $nextYoutubeIndex, $prevtdir, "zzzzzzzzzzzzzzz");
 
 

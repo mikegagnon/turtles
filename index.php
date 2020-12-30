@@ -333,7 +333,7 @@ if ($thisturtle) {
         //echo($ymatches[1][0][0]);
         //echo($ymatches[2][0][0]);
         //exit("foo");
-        
+
         $linkname = $ymatches[1][0][0];
         $ycode = $ymatches[2][0][0];
         $yentry = [$linkname, $ycode];
@@ -422,6 +422,50 @@ EOT;
 
 
 <?
+
+// TODO: return prevtdir for adjacent youtube videos to work
+function echoyoutubes($youtubelinks, $nextYoutubeIndex, $prevtdir, $basetdir) {
+    $yloop = false;
+    do {
+      //echo("enter do<br>");
+      if ($nextYoutubeIndex < count($youtubelinks))  {
+        $yname = $youtubelinks[$nextYoutubeIndex][0];
+        //echo("available link " . $yname . " " . $prevtdir . " " . $basetdir . "<br>");
+        if ($yname > $prevtdir && $yname <= $basetdir) {
+          //echo("right spot for link<br>");
+          $ycode = $youtubelinks[$nextYoutubeIndex][1];
+          //echo($yname . " " . $ycode);
+
+    $html = <<<EOT
+              <div class="row">
+              <div class="col-md-12">
+                 <center>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/$ycode" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </center>
+              </div>
+            </div>
+EOT;
+    echo $html;
+
+
+
+
+
+          $nextYoutubeIndex += 1;
+          $prevtdir = $yname;
+
+          $yloop = true;
+        }
+        else {
+          $yloop = false;
+        }
+      } else {
+        $yloop = false;
+      }
+
+    } while ($yloop);
+    return $nextYoutubeIndex;
+}
 if ($thisunit) {
 
   //   $t = nl2br(htmlentities($textContents));
@@ -436,7 +480,13 @@ if ($thisunit) {
 
 } else {
 
+  $basetdir = "000000000000"; 
+  $prevtdir = "000000000000";
+  $nextYoutubeIndex = 0;
+
   foreach ($turtledirs as &$tdir) {
+
+
 
     if (startsWith($tdir, ":")) {
       $basetdir = ltrim($tdir, ':'); 
@@ -445,6 +495,12 @@ if ($thisunit) {
       $basetdir = basename($tdir);
       $destination = $basetdir . "/index.html";
     }
+
+
+    $nextYoutubeIndex = echoyoutubes($youtubelinks, $nextYoutubeIndex, $prevtdir, $basetdir);
+
+
+
 
 
 
@@ -515,7 +571,14 @@ EOT;
     echo $html;
 
 
+    $prevtdir = $basetdir;
   }
+
+echo("nextYoutubeIndex " . $nextYoutubeIndex);
+echo("prevtdir " . $prevtdir);
+echo("basetdir " . $basetdir);
+  $nextYoutubeIndex = echoyoutubes($youtubelinks, $nextYoutubeIndex, $prevtdir, "zzzzzzzzzzzzzzz");
+
 
 
   foreach ($unitdirs as &$udir) {
@@ -563,7 +626,11 @@ EOT;
 EOT;
     echo $html;
 
+    $prevtdir = $basetdir;
+
   }
+
+
 
 }
 

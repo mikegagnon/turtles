@@ -6,6 +6,7 @@ import os
 import glob
 import sys
 import re
+import json
 rootpath = sys.argv[1]
 realpath = sys.argv[1] + "/main"
 hashpath = sys.argv[1] + "/hash"
@@ -137,10 +138,19 @@ def propagate(path):
     aggtags = " ".join(["#" + t for t in sorted(list(thesetags))])
     #print(path)
     outfname = path + "/robolink.txt"
+    outjname = path + "/hashtags.json"
     #print(outfname)
     f = open(outfname, "w")
     f.write(aggtags)
     f.close()
+
+    f = open(outjname, "w")
+
+    jtags = json.dumps(sorted(list(thesetags)))
+    f.write(jtags)
+    f.close()
+
+
 
     return thesetags
 

@@ -10,7 +10,9 @@ dir=`dirname "$path"`
 relpath=`grealpath --relative-to="$rootpath" "$dir"`
 
 cp "index.php" "$dir"
+#cp "compile-index.py" "$dir"
 cd "$dir"
 php index.php "$relpath" $reldepth > index.html
+#python3 compile-index.py "$relpath" $reldepth > index.json
 rm index.php
-
+#rm compile-index.py

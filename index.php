@@ -1,6 +1,13 @@
 <?
 
+// $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+// $txt = "John Doe\n";
+// fwrite($myfile, $txt);
+// $txt = "Jane Doe\n";
+// fwrite($myfile, $txt);
+// fclose($myfile);
 
+$json = new stdClass();
 
 function isTurtleDir($dirname) {
   return true; //return $dirname == "." || substr(basename($dirname), 0, strlen("dir-")) === "dir-";
@@ -137,6 +144,12 @@ if ($thisturtle) {
 
 
 
+
+$json->titleText = $titleText;
+$json->setupPrefix = $setupPrefix;
+$json->prettyrelpath = $prettyrelpath;
+$json->cwd = $cwd;
+
 ?>
 
 <!doctype html>
@@ -211,6 +224,7 @@ if ($thisturtle) {
   if (!empty($textContents)) {
     $t = nl2br(htmlentities($textContents));
   }
+
   //echo "<a href='$headerJpgFilename'><img class='main-img' src='$headerJpgFilename'></a>";
 
   //echo "<br><br>";
@@ -264,6 +278,8 @@ if ($thisturtle) {
 
   $linkhtml = "";
 
+  $json->outputLink = [];
+
   function outputLink($link) {
       global $linkhtml;
       global $turtledirs;
@@ -271,14 +287,18 @@ if ($thisturtle) {
       if (startsWith($link, "http")) {
           //echo "<b>Link</b>: <a href='$link'>$link</a><br>";
         $linkhtml = $linkhtml . "<b>Link</b>: <a href='$link'>$link</a><br>";
+        array_push($json->outputLink, ["http", $link]);
       } else if ($turrtlereflink) {
         #echo "turrtlereflink " . $turrtlereflink;
         #array_push($turtlerefLinks, $turrtlereflink);
         //array_push($turtledirs, ":" . $turrtlereflink);
         $linkhtml = $linkhtml . "<b>Link</b>: <a href='$turrtlereflink'>$link</a><br>";
+        array_push($json->outputLink, ["turrtlereflink", $link]);
+
       } else {
           //echo "<b>Link</b>: $link<br>";
         $linkhtml = $linkhtml . "<b>Link</b>: $link<br>";
+        array_push($json->outputLink, ["else", $link]);
       }       
   }
 
@@ -312,7 +332,6 @@ if ($thisturtle) {
       $ycode = $ymatches[2][0][0];
       $yentry = [$linkname, $ycode];
       array_push($youtubelinks, $yentry);
-
     } else if (!ctype_space($line) && !$istag && !$isyoutube) {
       outputLink($line);
     }
@@ -365,6 +384,8 @@ if ($thisturtle) {
     $thtml = "<div style='text-align: left;'>$t</div>";
   }
 
+  $json->t = $t;
+
 
 
 
@@ -405,6 +426,9 @@ EOT;
             </div>
 EOT;
     echo $html;
+
+    $json->headerJpgFilename = $headerJpgFilename;
+    $json->cssclass = $cssclass;
 
 
 
@@ -484,6 +508,8 @@ if ($thisunit) {
   $basetdir = "000000000000"; 
   $prevtdir = "000000000000";
   $nextYoutubeIndex = 0;
+
+  $json->cards = [];
 
   foreach ($turtledirs as &$tdir) {
 
@@ -571,6 +597,15 @@ if ($thisunit) {
 EOT;
     echo $html;
 
+    $card = new stdClass();
+    $card->destination = $destination;
+    $card->cssclass = $cssclass;
+    $card->imgsrc = $imgsrc;
+    $card->basetdir = $basetdir;
+
+    array_push($json->cards, $card);
+
+
 
     $prevtdir = $basetdir;
   }
@@ -634,6 +669,11 @@ EOT;
 
 
 }
+
+$myfile = fopen("index.json", "w") or die("Unable to open file!");
+$txt = json_encode($json, JSON_PRETTY_PRINT);
+fwrite($myfile, $txt);
+fclose($myfile);
 
 ?>
 

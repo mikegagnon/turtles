@@ -41,6 +41,10 @@ elif [[ "$path" == *.DS_Store ]]
 then
 	# Ignore these silly files
 	exit 0
+elif [[ "$path" == *.json ]]
+then
+	# Ignore these silly files
+	exit 0
 elif [[ "$path" == */link.txt ]]
 then
 	runphp=true

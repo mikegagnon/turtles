@@ -177,12 +177,11 @@ for tag in tags:
 
 jhashtags = json.dumps(json_tag_pages)
 outjhashname =  hashpath + "/hash-agg.json"
-print(jhashtags)
-print(outjhashname)
-sys.exit(1)
-#hf = open(outjhashname, "w")
-#hf.write(jtags)
-#hf.close()
+#print(jhashtags)
+#print(outjhashname)
+hf = open(outjhashname, "w")
+hf.write(jhashtags)
+hf.close()
 
 # Search and replace each .html file to hyperlink each hashtag
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)

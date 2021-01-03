@@ -17,6 +17,10 @@ relhashpath = ("../" * N ) + "hash"
 # tags[hashtag] = array of filenames containing that hashtag
 tags = {}
 
+# ... todo comment ...
+json_tag_pages = {}
+
+
 # companions[filename] = array of hashtags in that file
 companions = {}
 
@@ -168,7 +172,17 @@ for name in filenames:
 # Generate a new hash page for each tag
 for tag in tags:
     word = tag[1:]
+    json_tag_pages[word] = [os.path.dirname(os.path.relpath(x, realpath)) for x in tags[tag]]
     newtagpage(word, tags[tag])
+
+jhashtags = json.dumps(json_tag_pages)
+outjhashname =  hashpath + "/hash-agg.json"
+print(jhashtags)
+print(outjhashname)
+sys.exit(1)
+#hf = open(outjhashname, "w")
+#hf.write(jtags)
+#hf.close()
 
 # Search and replace each .html file to hyperlink each hashtag
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)

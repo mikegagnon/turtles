@@ -71,8 +71,11 @@ def newtagpage(word, filenames):
     html = f"<h1>#{word}</h1><ol>"
     for fname in filenames:
         comp = companions[fname]
+        #dname = os.path.dirname(fname)
+        #dname = remove_prefix(dname, realpath + "/")
         indexname = os.path.dirname(fname) + "/index.html"
         indexname = remove_prefix(indexname, realpath + "/") 
+        dname = indexname[:-len("/index.html")]
         comps = ""
         for c in comp:
             cname = relhashpath + "/" + c[1:] + ".html"
@@ -88,7 +91,11 @@ def newtagpage(word, filenames):
                 break
 
         if not skip:
-           html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
+            html += f"<li><a style='font-size: 200%' href='../main/{indexname}'>{indexname}</a> {comps}</li>"
+        else:
+            #print("word", word, filenames)
+            #print("skip", dname)
+            json_tag_pages["word"][word].remove(dname)
     html += "</ol>"
 
     tagpagename = hashpath + "/" + word + ".html"
@@ -97,7 +104,7 @@ def newtagpage(word, filenames):
     f.close()
 
 def hlink(rhashpath, tag):
-    print(rhashpath)
+    #print(rhashpath)
     #sys.exit(1)
 
     return f'<a href="{rhashpath}/{tag}.html">#{tag}</a> '
@@ -110,13 +117,13 @@ def sub(filename, thesetags):
 
     thesetags = [t[1:] for t in thesetags]
 
-    print(filename)
+    #print(filename)
     rhashpath = os.path.relpath(realpath, filename) + "/hash"
-    print(rhashpath)
+    #print(rhashpath)
 
     #cruft fixed_content = re.sub(r"(#([0-9A-Za-z\-]+))", r"<a href='" + hashpath + r"/\2.html'>#\2</a>", text)
     addtags = " ".join([hlink(rhashpath, t) for t in sorted(list(thesetags))])
-    print(addtags)
+    #print(addtags)
     fixed_content = re.sub("#hashtags.*foohash", "#hashtags " + addtags + "</div><span id='foohash", text)
 
 
@@ -171,7 +178,7 @@ propagate(realpath)
 # Then, process each link file
 filenames = glob.glob(realpath + "/**/robolink.txt", recursive=True)
 for name in filenames: 
-    print(name)
+    #print(name)
     process(name)
 
 # Generate a new hash page for each tag
@@ -180,21 +187,22 @@ for tag in tags:
     json_tag_pages["word"][word] = [os.path.dirname(os.path.relpath(x, realpath)) for x in tags[tag]]
     #json_tag_pages[word] = [os.path.dirname(os.path.relpath(x, realpath)) for x in tags[tag]]
     newtagpage(word, tags[tag])
+    print("json_tag_pages", word, json_tag_pages["word"][word])
 
 
 
 # Search and replace each .html file to hyperlink each hashtag
 filenames = glob.glob(realpath + "/**/index.html", recursive=True)
-print(companions)
+#print(companions)
 #friendly_compansions = {}
 for name in filenames:
-    print(name)
+    #print(name)
     rname = os.path.dirname(name) + "/robolink.txt"
     ref = os.path.dirname(os.path.relpath(name, realpath))
-    print("ref", ref)
+    #print("ref", ref)
     if rname in companions:
         thesetags = companions[rname]
-        print("x", thesetags)
+        #print("x", thesetags)
     else:
         thesetags = []
     sub(name, thesetags)
@@ -210,4 +218,4 @@ hf = open(outjhashname, "w")
 hf.write(jhashtags)
 hf.close()
 
-print(jhashtags)
+#print(jhashtags)

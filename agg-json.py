@@ -10,7 +10,7 @@ final_json = {}
 
 with open(hashpath + "/hash-agg.json") as f:
     hash_agg_json = json.load(f)
-    final_json["hash_agg_json"] = hash_agg_json
+    final_json["hash_agg_json"] = hash_agg_json["word"]
 
 # https://stackoverflow.com/questions/2212643/python-recursive-folder-read
 walk_dir = realpath
@@ -26,7 +26,7 @@ for root, subdirs, files in os.walk(walk_dir):
     hname = root + "/hashtags.json"
     print(hname)
     if os.stat(hname).st_size == 0:
-        final_json[d]["hashtags"] = []
+        final_json[d]["hashtags"] = hash_agg_json["friendly_companions"][d]
     else:
         with open(hname, 'r') as hf:
             final_json[d]["hashtags"] = json.load(hf)

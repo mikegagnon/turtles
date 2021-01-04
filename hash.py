@@ -20,6 +20,11 @@ tags = {}
 # ... todo comment ...
 json_tag_pages = {}
 
+# json_tag_pages["word"][hashtag without hash] = something
+json_tag_pages["word"] = {}
+
+# json_tag_pages["friendly_companions"][page reference] = list of hashtags for that page 
+json_tag_pages["friendly_companions"] = {}
 
 # companions[filename] = array of hashtags in that file
 companions = {}
@@ -172,10 +177,32 @@ for name in filenames:
 # Generate a new hash page for each tag
 for tag in tags:
     word = tag[1:]
-    json_tag_pages[word] = [os.path.dirname(os.path.relpath(x, realpath)) for x in tags[tag]]
+    json_tag_pages["word"][word] = [os.path.dirname(os.path.relpath(x, realpath)) for x in tags[tag]]
+    #json_tag_pages[word] = [os.path.dirname(os.path.relpath(x, realpath)) for x in tags[tag]]
     newtagpage(word, tags[tag])
 
-jhashtags = json.dumps(json_tag_pages)
+
+
+# Search and replace each .html file to hyperlink each hashtag
+filenames = glob.glob(realpath + "/**/index.html", recursive=True)
+print(companions)
+#friendly_compansions = {}
+for name in filenames:
+    print(name)
+    rname = os.path.dirname(name) + "/robolink.txt"
+    ref = os.path.dirname(os.path.relpath(name, realpath))
+    print("ref", ref)
+    if rname in companions:
+        thesetags = companions[rname]
+        print("x", thesetags)
+    else:
+        thesetags = []
+    sub(name, thesetags)
+    json_tag_pages["friendly_companions"][ref] = thesetags
+    #json_tag_pages[]   
+
+jhashtags = json.dumps(json_tag_pages, sort_keys=True, indent=4)
+#jhashtags = ... todo ...
 outjhashname =  hashpath + "/hash-agg.json"
 #print(jhashtags)
 #print(outjhashname)
@@ -183,15 +210,4 @@ hf = open(outjhashname, "w")
 hf.write(jhashtags)
 hf.close()
 
-# Search and replace each .html file to hyperlink each hashtag
-filenames = glob.glob(realpath + "/**/index.html", recursive=True)
-print(companions)
-for name in filenames:
-    rname = os.path.dirname(name) + "/robolink.txt"
-    print(rname)
-    if rname in companions:
-        thesetags = companions[rname]
-        print("x", thesetags)
-    else:
-        thesetags = []
-    sub(name, thesetags)
+print(jhashtags)

@@ -80,7 +80,7 @@ def newtagpage(word, filenames):
         for c in comp:
             cname = relhashpath + "/" + c[1:] + ".html"
             cname = remove_prefix(cname, rootpath + "/") 
-            comps += f"<a href='../{cname}'>{c}</a> "
+            comps += f"<a href='{cname}'>{c}</a> "
 
         skip = False
         for gname in filenames:

@@ -280,12 +280,10 @@ $json->cwd = $cwd;
 
   $json->outputLink = [];
 
-  echo("Bar " . $linktextcontents);
-
   function outputLink($link) {
-      echo("Baz " . $link);
       global $linkhtml;
       global $turtledirs;
+      global $json;
       $turrtlereflink = getTurtleRef($link);
       if (startsWith($link, "http")) {
           //echo "<b>Link</b>: <a href='$link'>$link</a><br>";
@@ -310,7 +308,6 @@ $json->cwd = $cwd;
   // https://stackoverflow.com/questions/1462720/iterate-over-each-line-in-a-string-in-php
   $separator = "\r\n";
   $line = strtok($linktextcontents, $separator);
-  echo("line " . $line);
   $linkhtml = $linkhtml . "<div style='text-align: left;'>";
   if ($line != false) {
     //echo "<div style='text-align: left;'>";
@@ -344,7 +341,6 @@ $json->cwd = $cwd;
     while ($line !== false) {
       # do something with $line
       $line = strtok($separator);
-      echo("liine " . $line);
       $oline = $line;
       preg_match('/^#/', $oline, $matches, PREG_OFFSET_CAPTURE);
       $istag = count($matches) === 1;
@@ -353,7 +349,6 @@ $json->cwd = $cwd;
       //$isyoutube = count($ymatches) >= 1;
       $isyoutube = preg_match('/^youtube:([^:]+):([^:]+)$/', $oline) ? true : false;
 
-        echo("[asdf,".count($ymatches).",-". $isyoutube . "-" .  ctype_space($line) . "-" . empty($line) . "]");
 
       if ($isyoutube) {
         //preg_match('/^youtube:/', $oline, $ymatches, PREG_OFFSET_CAPTURE);
@@ -366,7 +361,6 @@ $json->cwd = $cwd;
         $linkname = $ymatches[1][0][0];
         $ycode = $ymatches[2][0][0];
         $yentry = [$linkname, $ycode];
-        echo("youtube-".$linkname."-".$ycode);
         array_push($youtubelinks, $yentry);
       } else if (!ctype_space($line) && !empty($line) && 
         //substr($oline, 0, 1) !== "#"
@@ -377,7 +371,7 @@ $json->cwd = $cwd;
 
         
       } else {
-        echo("What link? " . $line);
+        #echo("What link? " . $line);
       }
     }
     //cruft $linkhtml = $linkhtml .  "</div>";
